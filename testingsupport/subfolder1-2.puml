@@ -13,7 +13,7 @@ namespace subfolder3 {
     }
 }
 
-"subfolder3.SubfolderInterface" <|-- "subfolder2.Subfolder2"
+"subfolder3.SubfolderInterface" <|.. "subfolder2.Subfolder2"
 
 
 @enduml

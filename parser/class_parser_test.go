@@ -188,7 +188,7 @@ func TestRenderStructures(t *testing.T) {
 	lineB := &LineStringBuilder{}
 	parser := getEmptyParser("main")
 	parser.renderStructures("main", structMap, lineB)
-	expectedResult := "namespace main {\n    class \"MainClass\" << (S,Aquamarine) >> {\n        - privateField int\n\n        + PublicField error\n\n        - foo( int,  string) (error, int)\n\n        + Boo( string,  int) int\n\n    }\n}\n\"foopack.AnotherClass\" *-- \"main.MainClass\"\n\n\"main.NewClass\" <|-- \"main.MainClass\"\n\n\n"
+	expectedResult := "namespace main {\n    class \"MainClass\" << (S,Aquamarine) >> {\n        - privateField int\n\n        + PublicField error\n\n        - foo( int,  string) (error, int)\n\n        + Boo( string,  int) int\n\n    }\n}\n\"foopack.AnotherClass\" *-- \"main.MainClass\"\n\n\"main.NewClass\" <|.. \"main.MainClass\"\n\n\n"
 	if lineB.String() != expectedResult {
 		t.Errorf("TestRenderStructures: expected %s, got %s", expectedResult, lineB.String())
 	}
@@ -205,7 +205,7 @@ func TestRenderStructures(t *testing.T) {
 		RenderAggregations: true,
 	})
 	parser.renderStructures("main", structMap, lineB)
-	expectedResult = "namespace main {\n    class \"MainClass\" << (S,Aquamarine) >> {\n        - privateField int\n\n        + PublicField error\n\n        - foo( int,  string) (error, int)\n\n        + Boo( string,  int) int\n\n    }\n}\n\"foopack.AnotherClass\" *-- \"main.MainClass\"\n\n\"main.NewClass\" <|-- \"main.MainClass\"\n\n\"main.MainClass\" o-- \"main.File\"\n\n\n"
+	expectedResult = "namespace main {\n    class \"MainClass\" << (S,Aquamarine) >> {\n        - privateField int\n\n        + PublicField error\n\n        - foo( int,  string) (error, int)\n\n        + Boo( string,  int) int\n\n    }\n}\n\"foopack.AnotherClass\" *-- \"main.MainClass\"\n\n\"main.NewClass\" <|.. \"main.MainClass\"\n\n\"main.MainClass\" o-- \"main.File\"\n\n\n"
 	if lineB.String() != expectedResult {
 		t.Errorf("TestRenderStructures: expected %s, got %s", expectedResult, lineB.String())
 	}
@@ -217,7 +217,7 @@ func TestRenderStructures(t *testing.T) {
 		AggregatePrivateMembers: true,
 	})
 	parser.renderStructures("main", structMap, lineB)
-	expectedResult = "namespace main {\n    class \"MainClass\" << (S,Aquamarine) >> {\n        - privateField int\n\n        + PublicField error\n\n        - foo( int,  string) (error, int)\n\n        + Boo( string,  int) int\n\n    }\n}\n\"foopack.AnotherClass\" *-- \"main.MainClass\"\n\n\"main.NewClass\" <|-- \"main.MainClass\"\n\n\"main.MainClass\" o-- \"main.File\"\n\"main.MainClass\" o-- \"main.File2\"\n\n\n"
+	expectedResult = "namespace main {\n    class \"MainClass\" << (S,Aquamarine) >> {\n        - privateField int\n\n        + PublicField error\n\n        - foo( int,  string) (error, int)\n\n        + Boo( string,  int) int\n\n    }\n}\n\"foopack.AnotherClass\" *-- \"main.MainClass\"\n\n\"main.NewClass\" <|.. \"main.MainClass\"\n\n\"main.MainClass\" o-- \"main.File\"\n\"main.MainClass\" o-- \"main.File2\"\n\n\n"
 	if lineB.String() != expectedResult {
 		t.Errorf("TestRenderStructures: expected %s, got %s", expectedResult, lineB.String())
 	}
@@ -240,7 +240,7 @@ func TestRenderStructure(t *testing.T) {
 	if compositionBuilder.String() != expectedComposition {
 		t.Errorf("TestRenderStructure: Expected compositionBuilder %s got %s", expectedComposition, compositionBuilder.String())
 	}
-	expectedExtends := "\"main.NewClass\" <|-- \"main.TestClass\"\n"
+	expectedExtends := "\"main.NewClass\" <|.. \"main.TestClass\"\n"
 	if extendBuilder.String() != expectedExtends {
 		t.Errorf("TestRenderStructure: Expected extendBuilder %s got %s", expectedExtends, extendBuilder.String())
 	}
@@ -354,7 +354,7 @@ func TestRenderExtends(t *testing.T) {
 	}
 	extendsBuilder := &LineStringBuilder{}
 	parser.renderExtends(st, "TestClass", extendsBuilder)
-	expectedResult := "\"foopack.AnotherClass\" <|-- \"main.TestClass\"\n"
+	expectedResult := "\"foopack.AnotherClass\" <|.. \"main.TestClass\"\n"
 	if extendsBuilder.String() != expectedResult {
 		t.Errorf("TestRenderExtends: Expected %s got %s", expectedResult, extendsBuilder.String())
 	}
@@ -367,7 +367,7 @@ func TestRenderExtends(t *testing.T) {
 	}
 	extendsBuilder = &LineStringBuilder{}
 	parser.renderExtends(st, "TestClass", extendsBuilder)
-	expectedResult = "\"main.AnotherClass\" <|-- \"main.TestClass\"\n"
+	expectedResult = "\"main.AnotherClass\" <|.. \"main.TestClass\"\n"
 	if extendsBuilder.String() != expectedResult {
 		t.Errorf("TestRenderExtends: Expected %s got %s", expectedResult, extendsBuilder.String())
 	}
@@ -986,7 +986,7 @@ namespace connectionlabels {
 "__builtin__.int" #.. "alias of""connectionlabels.AliasOfInt"
 "connectionlabels.AliasOfInt" *-- "extends""connectionlabels.ImplementsAbstractInterface"
 
-"connectionlabels.AbstractInterface" <|-- "implements""connectionlabels.ImplementsAbstractInterface"
+"connectionlabels.AbstractInterface" <|.. "implements""connectionlabels.ImplementsAbstractInterface"
 
 "connectionlabels.ImplementsAbstractInterface""uses" o-- "connectionlabels.AbstractInterface"
 
